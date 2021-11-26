@@ -8,7 +8,7 @@ from generator import Generator
 from discriminator import Discriminator
 from torch.utils.data import DataLoader
 from tqdm import tqdm
-
+import os
 
 from box import Box
 
@@ -23,6 +23,12 @@ merge_config = all_configs["common"]
 merge_config.update(all_configs[args.dataset])
 config = Box(merge_config)
 
+try:
+    folder = os.environ['SAVE_FOLDER']
+    if(folder is not None):
+        config.SAVE_FOLDER = folder
+except:
+    pass
 
 # torch.backends.cudnn.benchmark = True
 
@@ -103,10 +109,10 @@ def main():
         )
 
         if config.SAVE_MODEL and epoch % 10 == 0:
-            save_checkpoint(gen, opt_gen, filename=config.CHECKPOINT_GEN)
-            save_checkpoint(disc, opt_disc, filename=config.CHECKPOINT_DISC)
+            save_checkpoint(gen, opt_gen, epoch, config, filename=config.CHECKPOINT_GEN)
+            save_checkpoint(disc, opt_disc, epoch, config, filename=config.CHECKPOINT_DISC)
 
-        save_some_examples(gen, val_loader, epoch, config, folder="samples")
+        save_some_examples(gen, val_loader, epoch, config, folder=config.SAMPLES)
 
 
 if __name__ == "__main__":
