@@ -27,6 +27,9 @@ try:
     folder = os.environ['SAVE_FOLDER']
     if(folder is not None):
         config.SAVE_FOLDER = folder
+    folder = os.environ['SAMPLES']
+    if(folder is not None):
+        config.SAMPLES = folder
 except:
     pass
 
@@ -84,13 +87,18 @@ def main():
     L1_LOSS = nn.L1Loss()
 
     if config.LOAD_MODEL:
-        load_checkpoint(
-            config.CHECKPOINT_GEN, gen, opt_gen, config.LEARNING_RATE, config
-        )
-        load_checkpoint(
-            config.CHECKPOINT_DISC, disc, opt_disc, config.LEARNING_RATE, config
-        )
-
+        try:
+            load_checkpoint(
+                config.CHECKPOINT_GEN, gen, opt_gen, config.LEARNING_RATE, config
+            )
+            load_checkpoint(
+                config.CHECKPOINT_DISC, disc, opt_disc, config.LEARNING_RATE, config
+            )
+            print("Successfully loaded previous checkpoint")
+        except:
+            print("Failed to load previous checkpoint. Learning from scratch")
+            pass
+        
     train_dataset = P2PDataset(root_dir=config.TRAIN_DIR, config=config)
     train_loader = DataLoader(
         train_dataset,

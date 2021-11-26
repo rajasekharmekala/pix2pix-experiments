@@ -11,6 +11,7 @@ all_configs = {
         "LOAD_MODEL" : True,
         "SAVE_MODEL" : True,
         "SAVE_FOLDER": "saved_models", 
+        "EVALUATE_FOLDER": "evaluate",
         "CHECKPOINT_DISC" : "latest_n_disc.pth.tar",
         "CHECKPOINT_GEN" : "latest_n_gen.pth.tar",
     },
