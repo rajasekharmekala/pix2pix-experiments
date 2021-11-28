@@ -17,6 +17,9 @@ import argparse
 parser = argparse.ArgumentParser(description='Train Pix2Pix Model.')
 parser.add_argument('--dataset', metavar='d', type=str ,required=True,
                     help='provide datasetname')
+parser.add_argument('--n_layers',default=3, metavar='l', type=int ,
+                    help='provide layers count to be used in patchGAN')
+
 args = parser.parse_args()
 
 merge_config = all_configs["common"]
@@ -79,7 +82,7 @@ def train_fn(
 
 
 def main():
-    disc = Discriminator(in_channels=3).to(config.DEVICE)
+    disc = Discriminator(in_channels=3, num_layers=args.n_layers).to(config.DEVICE)
     gen = Generator(in_channels=3, features=64).to(config.DEVICE)
     opt_disc = optim.Adam(disc.parameters(), lr=config.LEARNING_RATE, betas=(0.5, 0.999),)
     opt_gen = optim.Adam(gen.parameters(), lr=config.LEARNING_RATE, betas=(0.5, 0.999))
@@ -98,7 +101,7 @@ def main():
         except:
             print("Failed to load previous checkpoint. Learning from scratch")
             pass
-        
+
     train_dataset = P2PDataset(root_dir=config.TRAIN_DIR, config=config)
     train_loader = DataLoader(
         train_dataset,
