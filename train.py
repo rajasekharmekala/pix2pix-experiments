@@ -114,12 +114,12 @@ def main():
     val_dataset = P2PDataset(root_dir=config.VAL_DIR, config=config)
     val_loader = DataLoader(val_dataset, batch_size=1, shuffle=False)
 
-    for epoch in range(config.NUM_EPOCHS):
+    for epoch in range(1, config.NUM_EPOCHS+1):
         train_fn(
             disc, gen, train_loader, opt_disc, opt_gen, L1_LOSS, BCE, g_scaler, d_scaler,
         )
 
-        if config.SAVE_MODEL and epoch % 10 == 0:
+        if config.SAVE_MODEL and (epoch % 20 ==0 or epoch == config.NUM_EPOCHS ):
             save_checkpoint(gen, opt_gen, epoch, config, filename=config.CHECKPOINT_GEN)
             save_checkpoint(disc, opt_disc, epoch, config, filename=config.CHECKPOINT_DISC)
 
