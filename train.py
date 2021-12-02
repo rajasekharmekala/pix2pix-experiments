@@ -20,6 +20,9 @@ parser.add_argument('--dataset', metavar='d', type=str ,required=True,
 parser.add_argument('--n_layers',default=3, metavar='l', type=int ,
                     help='provide layers count to be used in patchGAN')
 
+parser.add_argument('--train_flip', metavar='l', type=int ,
+                    help='set True to flip direction of training')
+
 args = parser.parse_args()
 
 merge_config = all_configs["common"]
@@ -35,6 +38,9 @@ try:
         config.SAMPLES = folder
 except:
     pass
+
+if(args.train_flip):
+    config.TRAIN_FLIP = True
 
 # torch.backends.cudnn.benchmark = True
 
