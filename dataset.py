@@ -19,7 +19,7 @@ class P2PDataset(Dataset):
         input_image = image[:, :self.config.IMAGE_SPLIT_POS, :]
         target_image = image[:, self.config.IMAGE_SPLIT_POS: self.config.IMAGE_LENGTH, :]
 
-        if (self.config.TRAIN_FLIP == 'reverse'):
+        if (self.config.TRAIN_FLIP):
             augmentations = self.config.both_transform(image=input_image, image0=target_image)
         else:
             augmentations = self.config.both_transform(image=target_image, image0=input_image)

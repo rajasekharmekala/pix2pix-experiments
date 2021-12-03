@@ -20,7 +20,7 @@ parser.add_argument('--dataset', metavar='d', type=str ,required=True,
 parser.add_argument('--n_layers',default=3, metavar='l', type=int ,
                     help='provide layers count to be used in patchGAN')
 
-parser.add_argument('--train_flip', metavar='l', type=int ,
+parser.add_argument('--train_flip', type=bool, metavar='f',
                     help='set True to flip direction of training')
 
 args = parser.parse_args()

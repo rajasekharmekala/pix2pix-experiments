@@ -23,7 +23,10 @@ def evaluate_model_examples(gen, val_loader, config, folder):
     loop = tqdm(val_loader, leave=True)
 
     for idx, batch in enumerate(loop):
-        x, y = Variable(batch[0]).to(config.DEVICE), Variable(batch[1]).to(config.DEVICE)
+        if(config.TRAIN_FLIP):
+            x, y = Variable(batch[1]).to(config.DEVICE), Variable(batch[0]).to(config.DEVICE)
+        else: 
+            x, y = Variable(batch[0]).to(config.DEVICE), Variable(batch[1]).to(config.DEVICE)
         # x, y = x.to(config.DEVICE), y.to(config.DEVICE)
         if not(os.path.isdir(folder)): os.mkdir(folder)
         with torch.no_grad():

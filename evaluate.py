@@ -13,6 +13,10 @@ import argparse
 parser = argparse.ArgumentParser(description='Evaluate Pix2Pix Model.')
 parser.add_argument('--dataset', metavar='d', type=str ,required=True,
                     help='provide datasetname')
+
+parser.add_argument('--train_flip', type=bool, metavar='f',
+                    help='set True to flip direction of training')
+
 args = parser.parse_args()
 from box import Box
 
@@ -31,6 +35,9 @@ try:
         config.EVALUATE_FOLDER = folder
 except:
     pass
+
+if(args.train_flip):
+    config.TRAIN_FLIP = True
 
 
 def evaluate():
