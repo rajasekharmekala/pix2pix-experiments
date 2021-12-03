@@ -16,13 +16,15 @@ class P2PDataset(Dataset):
         img_file = self.list_files[index]
         img_path = os.path.join(self.root_dir, img_file)
         image = np.array(Image.open(img_path))
-        input_image = image[:, :self.config.IMAGE_SPLIT_POS, :]
-        target_image = image[:, self.config.IMAGE_SPLIT_POS: self.config.IMAGE_LENGTH, :]
 
         if (self.config.TRAIN_FLIP):
-            augmentations = self.config.both_transform(image=input_image, image0=target_image)
+            target_image = image[:, :self.config.IMAGE_SPLIT_POS, :]
+            input_image = image[:, self.config.IMAGE_SPLIT_POS: self.config.IMAGE_LENGTH, :]
         else:
-            augmentations = self.config.both_transform(image=target_image, image0=input_image)
+            input_image = image[:, :self.config.IMAGE_SPLIT_POS, :]
+            target_image = image[:, self.config.IMAGE_SPLIT_POS: self.config.IMAGE_LENGTH, :]
+    
+        augmentations = self.config.both_transform(image=target_image, image0=input_image)
         input_image = augmentations["image"]
         target_image = augmentations["image0"]
 
