@@ -3,14 +3,11 @@ from torchvision.utils import save_image
 import os
 from torch.autograd import Variable
 from tqdm import tqdm
+from PIL import Image
 
 def save_some_examples(gen, val_loader, epoch, config, folder):
-    if(config.TRAIN_FLIP):
-        y, x = next(iter(val_loader))
-    else: 
-        x, y = next(iter(val_loader))
-
     x, y = next(iter(val_loader))
+    
     x, y = x.to(config.DEVICE), y.to(config.DEVICE)
     gen.eval()
     if not(os.path.isdir(folder)): os.mkdir(folder)
@@ -28,10 +25,7 @@ def evaluate_model_examples(gen, val_loader, config, folder):
     loop = tqdm(val_loader, leave=True)
 
     for idx, batch in enumerate(loop):
-        if(config.TRAIN_FLIP):
-            x, y = Variable(batch[1]).to(config.DEVICE), Variable(batch[0]).to(config.DEVICE)
-        else: 
-            x, y = Variable(batch[0]).to(config.DEVICE), Variable(batch[1]).to(config.DEVICE)
+        x, y = Variable(batch[0]).to(config.DEVICE), Variable(batch[1]).to(config.DEVICE)
         # x, y = x.to(config.DEVICE), y.to(config.DEVICE)
         if not(os.path.isdir(folder)): os.mkdir(folder)
         with torch.no_grad():
@@ -59,3 +53,18 @@ def load_checkpoint(checkpoint_file, model, optimizer, lr, config):
 
     for param_group in optimizer.param_groups:
         param_group["lr"] = lr
+
+def crop(img, pos, size):
+    ow, oh = img.size
+    x1, y1 = pos
+    tw = th = size
+    if (ow > tw or oh > th):
+        return img.crop((x1, y1, x1 + tw, y1 + th))
+    return img
+
+
+def flip(img, flip):
+    if flip:
+        return img.transpose(Image.FLIP_LEFT_RIGHT)
+    return img
+

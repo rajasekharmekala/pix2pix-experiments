@@ -36,9 +36,6 @@ try:
 except:
     pass
 
-if(args.train_flip):
-    config.TRAIN_FLIP = True
-
 
 def evaluate():
     gen = Generator(in_channels=3, features=64).to(config.DEVICE)

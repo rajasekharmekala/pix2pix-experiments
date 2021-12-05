@@ -39,11 +39,6 @@ try:
 except:
     pass
 
-if(args.train_flip):
-    config.TRAIN_FLIP = True
-
-# torch.backends.cudnn.benchmark = True
-
 
 def train_fn(
     disc, gen, loader, opt_disc, opt_gen, l1_loss, bce, g_scaler, d_scaler,
@@ -64,9 +59,8 @@ def train_fn(
             D_loss = (D_real_loss + D_fake_loss) / 2
 
         disc.zero_grad()
-        d_scaler.scale(D_loss).backward()
-        d_scaler.step(opt_disc)
-        d_scaler.update()
+        D_loss.backward()
+        opt_disc.step()
 
         # Train generator
         with torch.cuda.amp.autocast():
@@ -76,9 +70,8 @@ def train_fn(
             G_loss = G_fake_loss + L1
 
         opt_gen.zero_grad()
-        g_scaler.scale(G_loss).backward()
-        g_scaler.step(opt_gen)
-        g_scaler.update()
+        G_loss.backward()
+        opt_gen.step()
 
         if idx % 10 == 0:
             loop.set_postfix(

@@ -26,6 +26,7 @@ all_configs = {
         "IMAGE_LENGTH": 1200,
         "IMAGE_SPLIT_POS": 600,
         "NUM_EPOCHS": 200,
+        "TRAIN_FLIP": False,
         "both_transform": A.Compose([A.Resize(width=256, height=256), ], additional_targets={"image0": "image"}),
         "transform_only_input": A.Compose(
             [
@@ -49,7 +50,7 @@ all_configs = {
         "VAL_DIR": "data/facades/test",
         "SAMPLES": "samples/maps",
         "LEARNING_RATE": 2e-4,
-        "BATCH_SIZE": 16,
+        "BATCH_SIZE": 1,
         "IMAGE_SIZE": 256,
         "IMAGE_LENGTH": 512,
         "IMAGE_SPLIT_POS": 256,
