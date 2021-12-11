@@ -22,6 +22,7 @@ Inspired from Aladdin Persson gan tutorials
 
 
 
+
 ### Abstract
 
 In this project, we re-implement Isola et al.’s work on "Image-to-Image Translation
@@ -40,6 +41,8 @@ such as at synthesizing photos from label maps, reconstructing facades from man-
 ually annotated images among other tasks. The ideal consequence of the project
 would be to gain a deeper understanding of training robust GAN networks, and pro-
 vide methods that will improve both visual quality and realism in image translation.
+
+
 
 
 #### Datasets
