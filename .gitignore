@@ -131,4 +131,5 @@ dmypy.json
 data/maps*
 data/facades*
 
-samples/*
+*.DS_Store
+
